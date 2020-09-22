@@ -1,24 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import TodoItem from './components/todoItem';
+import todosData from './todosData'
 
 function App() {
+  const [todos, setTodos] = useState(todosData);
+
+  useEffect(() => {
+    console.log(todos)
+  }, [])
+
+  const handleChange = (id) => {
+
+    const newTodo = todos.map(val => {
+       val._id === id ? val.completed = !val.completed : val.completed = val.completed
+       return val
+    })
+
+    console.table(newTodo)
+    setTodos(newTodo)
+
+    console.log('checked', id)
+  }
+
+
+  const todosItem = todos.map(val => <TodoItem key={val._id} item={val} handleChange={() => handleChange(val._id)} />)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="todo-list">
+      {
+        todosItem
+      }
     </div>
   );
 }
